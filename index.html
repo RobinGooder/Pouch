@@ -147,7 +147,7 @@
   .hprogress{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5;}
   .hdot{width:8px;height:8px;border-radius:50%;background:var(--line);transition:background .2s;}
   .hdot.on{background:var(--green);}
-  .swipe-hint{position:absolute;top:22px;left:50%;transform:translateX(-50%);font-family:'Space Mono',monospace;
+  .swipe-hint{position:absolute;top:70px;left:50%;transform:translateX(-50%);font-family:'Space Mono',monospace;
     font-size:11px;color:var(--text-3);letter-spacing:1px;z-index:5;white-space:nowrap;}
 
   /* steps + CTA */
@@ -194,6 +194,61 @@
   <button class="nav-ca" id="navCa" title="Copy contract address"><span>CA:</span><span id="navCaVal"></span></button>
   <a class="nav-cta" href="https://fun.noxa.fi/rh/token/0x6a62d8753c6637f45064c12dda746d053fe1a370" target="_blank" rel="noopener">Buy</a>
 </nav>
+
+<!-- ===== HORIZONTAL SCROLL STORY ===== -->
+<section class="hwrap" id="hstory">
+  <span class="swipe-hint">SCROLL — THE STORY MOVES SIDEWAYS</span>
+  <div class="htrack" id="htrack">
+    <div class="panel center">
+      <div class="panel-inner">
+        <img class="panel-art mid" src="assets/pouch.png" alt="">
+        <span class="kicker">01 / THE POUCH</span>
+        <h3>One bag carried<br>the whole legend.</h3>
+        <p>Robin Hood robbed the rich and moved the loot in a <b>green drawstring pouch</b> — from the people who hoarded it to the people who needed it. No mascot. No backstory. <span class="g">Just the bag.</span></p>
+      </div>
+    </div>
+    <div class="panel">
+      <img class="panel-art" src="assets/coin.png" alt="">
+      <div class="panel-inner">
+        <span class="kicker">02 / THE TOKEN</span>
+        <h3>$POUCH is the bag,<br>onchain.</h3>
+        <p>A memecoin with nothing to hide: <b>LP locked forever</b>, <b>0% tax</b>, no pause switch, no blacklist, live on a real Uniswap V3 pool from block one. What you see is exactly what you hold.</p>
+        <div class="stat-row">
+          <div class="stat"><div class="k">TAX</div><div class="v g">0.00%</div></div>
+          <div class="stat"><div class="k">LP</div><div class="v g">LOCKED</div></div>
+          <div class="stat"><div class="k">POOL</div><div class="v">UNI V3</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <img class="panel-art" src="assets/pouch.png" alt="">
+      <div class="panel-inner">
+        <span class="kicker">03 / THE CHAIN</span>
+        <h3>Why Robinhood Chain?</h3>
+        <p>Because it's <b>Robin Hood's name on the door.</b> A permissionless Ethereum L2 (Arbitrum Orbit) built to tokenize the rich man's stocks — the one place the outlaw's pouch belongs. ETH gas, real DEXs, and retail already at the table.</p>
+        <div class="stat-row">
+          <div class="stat"><div class="k">CHAIN ID</div><div class="v">4663</div></div>
+          <div class="stat"><div class="k">GAS</div><div class="v">ETH</div></div>
+          <div class="stat"><div class="k">STACK</div><div class="v">ORBIT L2</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel center">
+      <div class="panel-inner">
+        <span class="kicker">04 / THE MOVE</span>
+        <h3>Secure the bag.</h3>
+        <p>The vault's right there. The pouch is open.<br><span class="g">You know what to do.</span></p>
+        <div class="cta-row" style="margin-top:26px;justify-content:center;">
+          <a class="btn btn-buy" href="https://fun.noxa.fi/rh/token/0x6a62d8753c6637f45064c12dda746d053fe1a370" target="_blank" rel="noopener">Buy $POUCH</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hprogress" id="hdots">
+    <span class="hdot on"></span><span class="hdot"></span><span class="hdot"></span><span class="hdot"></span>
+  </div>
+</section>
+
 
 <header class="hero" id="top">
   <div class="hero-glow"></div>
@@ -252,60 +307,6 @@
       <div class="card"><div class="ic">🪙</div><h3>No coins skimmed</h3><p>0% tax, no blacklist, no pause. Every coin that goes in the pouch stays in the pouch. No toll on the loot.</p><span class="tag">0% TAX</span></div>
       <div class="card"><div class="ic">⚡</div><h3>Full from block one</h3><p>Tradeable on a real DEX the second it deployed — no waiting to graduate. The pouch is heavy immediately.</p><span class="tag">INSTANT V3</span></div>
     </div>
-  </div>
-</section>
-
-<!-- ===== HORIZONTAL SCROLL STORY ===== -->
-<section class="hwrap" id="hstory">
-  <span class="swipe-hint">SCROLL — THE STORY MOVES SIDEWAYS</span>
-  <div class="htrack" id="htrack">
-    <div class="panel center">
-      <div class="panel-inner">
-        <img class="panel-art mid" src="assets/pouch.png" alt="">
-        <span class="kicker">01 / THE POUCH</span>
-        <h3>One bag carried<br>the whole legend.</h3>
-        <p>Robin Hood robbed the rich and moved the loot in a <b>green drawstring pouch</b> — from the people who hoarded it to the people who needed it. No mascot. No backstory. <span class="g">Just the bag.</span></p>
-      </div>
-    </div>
-    <div class="panel">
-      <img class="panel-art" src="assets/coin.png" alt="">
-      <div class="panel-inner">
-        <span class="kicker">02 / THE TOKEN</span>
-        <h3>$POUCH is the bag,<br>onchain.</h3>
-        <p>A memecoin with nothing to hide: <b>LP locked forever</b>, <b>0% tax</b>, no pause switch, no blacklist, live on a real Uniswap V3 pool from block one. What you see is exactly what you hold.</p>
-        <div class="stat-row">
-          <div class="stat"><div class="k">TAX</div><div class="v g">0.00%</div></div>
-          <div class="stat"><div class="k">LP</div><div class="v g">LOCKED</div></div>
-          <div class="stat"><div class="k">POOL</div><div class="v">UNI V3</div></div>
-        </div>
-      </div>
-    </div>
-    <div class="panel">
-      <img class="panel-art" src="assets/pouch.png" alt="">
-      <div class="panel-inner">
-        <span class="kicker">03 / THE CHAIN</span>
-        <h3>Why Robinhood Chain?</h3>
-        <p>Because it's <b>Robin Hood's name on the door.</b> A permissionless Ethereum L2 (Arbitrum Orbit) built to tokenize the rich man's stocks — the one place the outlaw's pouch belongs. ETH gas, real DEXs, and retail already at the table.</p>
-        <div class="stat-row">
-          <div class="stat"><div class="k">CHAIN ID</div><div class="v">4663</div></div>
-          <div class="stat"><div class="k">GAS</div><div class="v">ETH</div></div>
-          <div class="stat"><div class="k">STACK</div><div class="v">ORBIT L2</div></div>
-        </div>
-      </div>
-    </div>
-    <div class="panel center">
-      <div class="panel-inner">
-        <span class="kicker">04 / THE MOVE</span>
-        <h3>Secure the bag.</h3>
-        <p>The vault's right there. The pouch is open.<br><span class="g">You know what to do.</span></p>
-        <div class="cta-row" style="margin-top:26px;justify-content:center;">
-          <a class="btn btn-buy" href="https://fun.noxa.fi/rh/token/0x6a62d8753c6637f45064c12dda746d053fe1a370" target="_blank" rel="noopener">Buy $POUCH</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="hprogress" id="hdots">
-    <span class="hdot on"></span><span class="hdot"></span><span class="hdot"></span><span class="hdot"></span>
   </div>
 </section>
 
@@ -409,14 +410,17 @@
     gsap.to('#progress',{scaleX:1,ease:'none',
       scrollTrigger:{trigger:document.body,start:'top top',end:'bottom bottom',scrub:0.3}});
 
-    /* hero entrance */
-    gsap.from('#assetHead',{y:-24,opacity:0,duration:.7,ease:'power2.out'});
-    gsap.from('#pouchBtn',{scale:0.6,opacity:0,duration:.9,delay:.15,ease:'elastic.out(1,0.5)'});
-    gsap.from('#bigTitle .ch',{y:60,opacity:0,duration:.6,delay:.35,stagger:.06,ease:'back.out(1.7)'});
-    gsap.from('.pitch, .hero .cta-row, .ca-chip, .lootbar, .tapHint',{y:24,opacity:0,duration:.6,delay:.6,stagger:.08,ease:'power2.out'});
-
-    /* pouch idle float */
-    gsap.to('#pouchBtn',{y:-10,duration:2.2,yoyo:true,repeat:-1,ease:'sine.inOut',delay:1.4});
+    /* hero entrance — plays when the hero scrolls into view, after the story */
+    const heroEls=['#assetHead','#pouchBtn','#bigTitle .ch','.pitch','.hero .cta-row','.ca-chip','.lootbar','.tapHint'];
+    gsap.set(heroEls,{opacity:0});
+    let floatTween;
+    function startFloat(){ if(!floatTween) floatTween=gsap.to('#pouchBtn',{y:-10,duration:2.2,yoyo:true,repeat:-1,ease:'sine.inOut'}); }
+    const heroTl=gsap.timeline({paused:true,onComplete:startFloat});
+    heroTl.fromTo('#assetHead',{y:-24,opacity:0},{y:0,opacity:1,duration:.7,ease:'power2.out'})
+          .fromTo('#pouchBtn',{scale:0.6,opacity:0},{scale:1,opacity:1,duration:.9,ease:'elastic.out(1,0.5)'},0.1)
+          .fromTo('#bigTitle .ch',{y:60,opacity:0},{y:0,opacity:1,duration:.6,stagger:.06,ease:'back.out(1.7)'},0.25)
+          .fromTo('.pitch, .hero .cta-row, .ca-chip, .lootbar, .tapHint',{y:24,opacity:0},{y:0,opacity:1,duration:.6,stagger:.08,ease:'power2.out'},0.4);
+    ScrollTrigger.create({trigger:'#top',start:'top 78%',once:true,onEnter:()=>heroTl.play()});
 
     /* ===== three cards animate in sequentially from the bottom ===== */
     gsap.to('#cardRow .card',{
