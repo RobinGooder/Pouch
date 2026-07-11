@@ -37,6 +37,9 @@
   a{color:inherit;text-decoration:none;}
   .wrap{max-width:1040px;margin:0 auto;padding:0 20px;}
   img{user-select:none;-webkit-user-drag:none;}
+  .hstory-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.9;}
+  .hstory-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,.62));}
+  .panel h3,.panel p,.panel .kicker{text-shadow:0 1px 14px rgba(0,0,0,.55);}
 
   /* scroll progress bar */
   #progress{position:fixed;top:0;left:0;height:3px;width:100%;background:var(--green);transform-origin:0 50%;
@@ -127,7 +130,7 @@
 
   /* ===== HORIZONTAL SCROLL STORY ===== */
   .hwrap{position:relative;overflow:hidden;background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
-  .htrack{display:flex;height:100vh;height:100svh;align-items:stretch;will-change:transform;}
+  .htrack{position:relative;z-index:2;display:flex;height:100vh;height:100svh;align-items:stretch;will-change:transform;}
   .panel{flex:0 0 100vw;min-width:100vw;display:flex;align-items:center;justify-content:center;padding:64px 24px;position:relative;}
   .panel-inner{max-width:560px;text-align:left;}
   .panel .kicker{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;color:var(--green);letter-spacing:1px;margin-bottom:14px;display:block;}
@@ -149,11 +152,6 @@
   .panel-art.mid{opacity:.9;position:static;width:min(58vw,300px);filter:drop-shadow(0 0 42px rgba(0,200,5,.25));margin:0 auto 20px;display:block;}
   .panel.center{text-align:center;}
   .panel.center .panel-inner{text-align:center;}
-  .panel.has-video{overflow:hidden;}
-  .panel-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.9;}
-  .panel-bg-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,.62));}
-  .panel.has-video .panel-inner{position:relative;z-index:2;text-shadow:0 2px 20px rgba(0,0,0,.6);}
-  .panel.has-video .panel p{color:#EDEDED;}
   .hprogress{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5;}
   .hdot{width:8px;height:8px;border-radius:50%;background:var(--line);transition:background .2s;}
   .hdot.on{background:var(--green);}
@@ -207,6 +205,10 @@
 
 <!-- ===== HORIZONTAL SCROLL STORY ===== -->
 <section class="hwrap" id="hstory">
+  <video class="hstory-bg" autoplay muted loop playsinline preload="auto" poster="assets/section4-poster.jpg" aria-hidden="true">
+    <source src="assets/section4.mp4" type="video/mp4">
+  </video>
+  <div class="hstory-overlay"></div>
   <div class="htrack" id="htrack">
     <div class="panel center">
       <div class="panel-inner">
@@ -247,11 +249,7 @@
         </div>
       </div>
     </div>
-    <div class="panel center has-video">
-      <video class="panel-bg" autoplay muted loop playsinline preload="auto" aria-hidden="true" poster="assets/section4-poster.jpg">
-        <source src="assets/section4.mp4" type="video/mp4">
-      </video>
-      <div class="panel-bg-overlay"></div>
+    <div class="panel center">
       <div class="panel-inner">
         <span class="kicker">04 / THE MOVE</span>
         <h3>Secure the bag.</h3>
