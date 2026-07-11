@@ -162,7 +162,7 @@
 <nav class="nav">
   <a href="#top" class="brand">$<b>POUCH</b></a>
   <button class="nav-ca" id="navCa" title="Copy contract address"><span>CA:</span><span id="navCaVal">paste after launch</span></button>
-  <a class="nav-cta" href="https://fun.noxa.fi/robinhood" target="_blank" rel="noopener">Buy</a>
+  <a class="nav-cta" href="https://fun.noxa.fi/rh/token/0x6a62d8753c6637f45064c12dda746d053fe1a370" target="_blank" rel="noopener">Buy</a>
 </nav>
 
 <header class="hero" id="top">
@@ -191,7 +191,7 @@
     <p class="pitch">Robin Hood carried one thing everywhere: the pouch he used to <b>rob the rich and fill the pockets of the poor</b>. Robinhood built a chain to tokenize the rich man's stocks. The pouch came along for the ride — <span class="g">and it doesn't run dry.</span></p>
 
     <div class="cta-row">
-      <a class="btn btn-buy" href="https://fun.noxa.fi/robinhood" target="_blank" rel="noopener">Buy $POUCH on NOXA</a>
+      <a class="btn btn-buy" href="https://fun.noxa.fi/rh/token/0x6a62d8753c6637f45064c12dda746d053fe1a370" target="_blank" rel="noopener">Buy $POUCH on NOXA</a>
       <a class="btn btn-chart" href="#" id="chartBtn">View chart</a>
     </div>
 
@@ -239,12 +239,12 @@
     <div class="steps">
       <div class="step"><h3>Set the chain</h3><p>Add Robinhood Chain to MetaMask / OKX / Rabby. Gas is ETH.</p><code>Chain ID 4663</code><code>rpc.mainnet.chain.robinhood.com</code></div>
       <div class="step"><h3>Bridge in</h3><p>Move ETH across with a fast bridge like Relay or Across. Two minutes.</p><code>Relay · Across · Arbitrum Portal</code></div>
-      <div class="step"><h3>Secure it</h3><p>Open the launchpad, paste the $POUCH contract, and load the bag.</p><code>fun.noxa.fi/robinhood</code></div>
+      <div class="step"><h3>Secure it</h3><p>Open the $POUCH page on NOXA and load the bag.</p><code>fun.noxa.fi/rh</code></div>
     </div>
     <div class="grab">
       <h2>Secure the bag.</h2>
       <p>The vault's right there. The pouch is open. You know what to do.</p>
-      <a class="btn btn-buy" href="https://fun.noxa.fi/robinhood" target="_blank" rel="noopener">Buy $POUCH on NOXA</a>
+      <a class="btn btn-buy" href="https://fun.noxa.fi/rh/token/0x6a62d8753c6637f45064c12dda746d053fe1a370" target="_blank" rel="noopener">Buy $POUCH on NOXA</a>
     </div>
   </div>
 </section>
@@ -253,8 +253,8 @@
   <div class="wrap">
     <div class="foot-brand">$<b>POUCH</b></div>
     <div class="foot-links">
-      <a href="https://fun.noxa.fi/robinhood" target="_blank" rel="noopener">NOXA Launchpad</a>
-      <a href="#" target="_blank" rel="noopener">X / Twitter</a>
+      <a href="https://fun.noxa.fi/rh/token/0x6a62d8753c6637f45064c12dda746d053fe1a370" target="_blank" rel="noopener">NOXA Launchpad</a>
+      <a href="https://www.x.com/RobinsPouch" target="_blank" rel="noopener">X / Twitter</a>
       <a href="#" target="_blank" rel="noopener">Telegram</a>
       <a href="https://robinhoodchain.blockscout.com" target="_blank" rel="noopener">Explorer</a>
     </div>
@@ -265,7 +265,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  const CA = ""; // ← paste your $POUCH contract address here after you launch
+  const CA = "0x6a62d8753c6637f45064c12dda746d053fe1a370"; // ← paste your $POUCH contract address here after you launch
   function shorten(a){return a?a.slice(0,6)+"…"+a.slice(-4):"";}
   if(CA){document.getElementById('caVal').textContent=CA;document.getElementById('navCaVal').textContent=shorten(CA);}
 
