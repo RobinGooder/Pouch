@@ -197,7 +197,6 @@
 
 <!-- ===== HORIZONTAL SCROLL STORY ===== -->
 <section class="hwrap" id="hstory">
-  <span class="swipe-hint">SCROLL — THE STORY MOVES SIDEWAYS</span>
   <div class="htrack" id="htrack">
     <div class="panel center">
       <div class="panel-inner">
@@ -461,11 +460,15 @@
       }
     });
 
-    /* per-panel content drift-in while scrubbing */
-    panels.forEach(p=>{
+    /* first panel shows immediately on load; the rest drift in as they scroll into view */
+    panels.forEach((p,i)=>{
       const inner=p.querySelector('.panel-inner');
-      gsap.from(inner,{y:40,opacity:0,duration:.5,ease:'power2.out',
-        scrollTrigger:{trigger:p,containerAnimation:hTween,start:'left 70%',toggleActions:'play none none reverse'}});
+      if(i===0){
+        gsap.from(inner,{y:20,opacity:0,duration:.7,ease:'power2.out'});
+      }else{
+        gsap.from(inner,{y:40,opacity:0,duration:.5,ease:'power2.out',
+          scrollTrigger:{trigger:p,containerAnimation:hTween,start:'left 70%',toggleActions:'play none none reverse'}});
+      }
     });
   }else{
     /* reduced motion: everything visible, no pinning */
