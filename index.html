@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>$POUCH — secure the bag · Robinhood Chain</title>
-<meta name="description" content="Robin Hood carried one thing everywhere: the pouch. It's on Robinhood Chain now, and it doesn't run dry. $POUCH — launching on NOXA.">
+<meta name="description" content="Robin Hood carried one thing everywhere: the pouch. It's on Robinhood Chain now, and it doesn't run dry. $POUCH.">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
@@ -18,27 +18,31 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --green:#00C805;          /* Robinhood green */
+    --green:#00C805;
     --green-dim:#00A004;
     --green-tint:rgba(0,200,5,.10);
-    --bg:#000000;             /* RH dark mode black */
-    --surface:#0D0D0D;        /* card black */
+    --bg:#000000;
+    --surface:#0D0D0D;
     --surface-2:#151515;
-    --line:#222222;           /* hairline borders */
+    --line:#222222;
     --text:#FFFFFF;
-    --text-2:#9E9E9E;         /* secondary gray */
+    --text-2:#9E9E9E;
     --text-3:#6B6B6B;
-    --red:#FF5000;            /* RH sell/negative orange-red */
-    --gold:#F0B429;           /* coin gold from the art */
+    --gold:#F0B429;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:auto;}
   body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);
     overflow-x:hidden;-webkit-font-smoothing:antialiased;}
   a{color:inherit;text-decoration:none;}
   .wrap{max-width:1040px;margin:0 auto;padding:0 20px;}
+  img{user-select:none;-webkit-user-drag:none;}
 
-  /* NAV — flat app bar */
+  /* scroll progress bar */
+  #progress{position:fixed;top:0;left:0;height:3px;width:100%;background:var(--green);transform-origin:0 50%;
+    transform:scaleX(0);z-index:100;}
+
+  /* NAV */
   .nav{position:sticky;top:0;z-index:60;display:flex;align-items:center;gap:14px;padding:14px 20px;
     background:rgba(0,0,0,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
   .brand{font-weight:900;font-size:19px;letter-spacing:-.3px;}
@@ -49,37 +53,35 @@
   .nav-cta:active{background:var(--green-dim);}
   @media(min-width:720px){.nav-ca{display:flex;}}
 
-  /* HERO — like an asset page */
-  .hero{text-align:center;padding:36px 0 30px;position:relative;}
-  .asset-head{display:flex;flex-direction:column;align-items:center;gap:4px;}
+  /* HERO */
+  .hero{text-align:center;padding:36px 0 44px;position:relative;overflow:hidden;}
+  .hero-glow{position:absolute;left:50%;top:36%;width:640px;height:640px;transform:translate(-50%,-50%);
+    background:radial-gradient(circle,rgba(0,200,5,.14) 0%,transparent 62%);pointer-events:none;}
+  .asset-head{display:flex;flex-direction:column;align-items:center;gap:4px;position:relative;}
   .asset-name{font-size:15px;color:var(--text-2);font-weight:500;}
   .asset-price{font-size:clamp(38px,9vw,54px);font-weight:900;letter-spacing:-1.5px;}
   .asset-change{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:15px;color:var(--green);}
-  .asset-change .arrow{display:inline-block;transform:translateY(-1px);}
   .badge-chain{display:inline-flex;align-items:center;gap:8px;margin-top:10px;background:var(--surface);color:var(--text-2);
     font-weight:500;font-size:12.5px;padding:7px 14px;border-radius:999px;border:1px solid var(--line);}
   .dot{width:8px;height:8px;border-radius:50%;background:var(--green);}
 
   .pouch-stage{position:relative;margin:22px auto 4px;width:min(300px,66vw);}
-  #pouchBtn{display:block;width:100%;background:none;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent;
-    transition:transform .09s cubic-bezier(.34,1.56,.64,1);will-change:transform;}
+  #pouchBtn{display:block;width:100%;background:none;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent;will-change:transform;}
   #pouchBtn img{width:100%;height:auto;display:block;filter:drop-shadow(0 0 42px rgba(0,200,5,.22));pointer-events:none;}
-  #pouchBtn.squish{transform:scale(1.06,0.9) translateY(6px);}
   #pouchBtn:focus-visible{outline:2px solid var(--green);outline-offset:10px;border-radius:24px;}
   .tapHint{font-family:'Space Mono',monospace;font-size:12px;color:var(--text-3);margin-top:12px;}
   .tapHint b{color:var(--green);}
-
   .fcoin{position:absolute;top:26%;left:50%;width:38px;height:38px;margin-left:-19px;
     pointer-events:none;z-index:5;will-change:transform,opacity;}
 
-  /* loot counter — RH stat row */
   .lootbar{max-width:360px;margin:18px auto 0;background:var(--surface);border:1px solid var(--line);border-radius:16px;
     padding:14px 18px;display:flex;align-items:center;justify-content:space-between;}
   .lootbar .lab{font-size:12px;color:var(--text-2);text-align:left;line-height:1.35;}
   .lootbar .num{font-weight:900;font-size:28px;color:var(--text);line-height:1;display:flex;align-items:center;gap:8px;letter-spacing:-.5px;}
   .ccoin{width:28px;height:28px;object-fit:contain;}
 
-  .title{font-weight:900;font-size:clamp(56px,15vw,120px);line-height:.95;letter-spacing:-4px;margin-top:22px;}
+  .title{font-weight:900;font-size:clamp(56px,15vw,120px);line-height:.95;letter-spacing:-4px;margin-top:22px;display:inline-block;}
+  .title .ch{display:inline-block;will-change:transform,opacity;}
   .dollar{color:var(--green);}
   .subtitle{font-size:clamp(16px,4vw,22px);color:var(--text-2);font-weight:500;margin-top:6px;letter-spacing:-.3px;}
   .pitch{max-width:560px;margin:16px auto 0;font-size:clamp(15px,3.3vw,17px);font-weight:500;line-height:1.6;color:var(--text-2);}
@@ -87,7 +89,7 @@
   .pitch .g{color:var(--green);font-weight:700;}
 
   .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:26px;}
-  .btn{font-weight:700;font-size:16px;padding:15px 30px;border-radius:999px;cursor:pointer;transition:background .15s,border-color .15s;border:1px solid transparent;}
+  .btn{font-weight:700;font-size:16px;padding:15px 30px;border-radius:999px;cursor:pointer;transition:background .15s,border-color .15s;border:1px solid transparent;display:inline-block;}
   .btn-buy{background:var(--green);color:#000;}
   .btn-buy:active{background:var(--green-dim);}
   .btn-chart{background:transparent;color:var(--green);border-color:var(--green);}
@@ -98,7 +100,7 @@
   .ca-chip .val{font-family:'Space Mono',monospace;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;text-align:left;color:var(--text-2);}
   .ca-chip .cpy{font-weight:700;font-size:12px;background:var(--green);color:#000;padding:6px 12px;border-radius:999px;}
 
-  /* ticker-tape marquee */
+  /* ticker marquee */
   .marquee{background:var(--bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
     overflow:hidden;white-space:nowrap;padding:12px 0;}
   .marquee-track{display:inline-block;animation:scroll 24s linear infinite;font-family:'Space Mono',monospace;font-weight:700;font-size:14px;color:var(--text-2);}
@@ -106,30 +108,53 @@
   .marquee-track b{color:var(--green);}
   @keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
-  /* SECTIONS */
-  section.block{padding:58px 0;}
-  section.alt{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  /* ===== SCROLL-TRIGGERED CARDS ===== */
+  section.block{padding:72px 0;}
   .eyebrow{display:inline-block;font-family:'Space Mono',monospace;font-weight:700;font-size:11.5px;color:var(--green);
     background:var(--green-tint);padding:6px 12px;border-radius:999px;margin-bottom:16px;letter-spacing:.5px;}
   .h2{font-weight:900;font-size:clamp(28px,6.2vw,46px);line-height:1.06;letter-spacing:-1.5px;}
-  .lore-p{font-size:clamp(15px,3.3vw,17px);font-weight:500;line-height:1.7;max-width:620px;margin-top:16px;color:var(--text-2);}
-  .lore-p b{color:var(--text);}
-  .lore-p .g{color:var(--green);font-weight:700;}
+  .sub-line{font-size:clamp(15px,3.3vw,17px);color:var(--text-2);margin-top:12px;max-width:560px;line-height:1.6;}
 
-  .cards{display:grid;grid-template-columns:1fr;gap:14px;margin-top:30px;}
-  @media(min-width:640px){.cards{grid-template-columns:1fr 1fr;}}
-  @media(min-width:940px){.cards.three{grid-template-columns:1fr 1fr 1fr;}}
-  .card{background:var(--surface-2);border:1px solid var(--line);border-radius:18px;padding:22px;transition:border-color .15s;}
-  .card:active{border-color:var(--green);}
-  .card .ic{font-size:24px;line-height:1;}
-  .card h3{font-weight:700;font-size:17px;color:var(--text);margin:12px 0 6px;letter-spacing:-.3px;}
-  .card p{font-size:14.5px;font-weight:500;line-height:1.6;color:var(--text-2);}
-  .card .tag{display:inline-block;margin-top:12px;font-family:'Space Mono',monospace;font-weight:700;font-size:11px;
+  .cards{display:grid;grid-template-columns:1fr;gap:16px;margin-top:36px;}
+  @media(min-width:840px){.cards{grid-template-columns:1fr 1fr 1fr;}}
+  .card{background:var(--surface-2);border:1px solid var(--line);border-radius:20px;padding:26px;
+    opacity:0;transform:translateY(70px);will-change:transform,opacity;}
+  .card .ic{width:44px;height:44px;border-radius:12px;background:var(--green-tint);display:grid;place-items:center;font-size:22px;}
+  .card h3{font-weight:700;font-size:18px;color:var(--text);margin:16px 0 8px;letter-spacing:-.3px;}
+  .card p{font-size:14.5px;font-weight:500;line-height:1.65;color:var(--text-2);}
+  .card .tag{display:inline-block;margin-top:14px;font-family:'Space Mono',monospace;font-weight:700;font-size:11px;
     color:var(--green);background:var(--green-tint);padding:4px 10px;border-radius:999px;}
 
+  /* ===== HORIZONTAL SCROLL STORY ===== */
+  .hwrap{position:relative;overflow:hidden;background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .htrack{display:flex;height:100vh;height:100svh;align-items:stretch;will-change:transform;}
+  .panel{flex:0 0 100vw;min-width:100vw;display:flex;align-items:center;justify-content:center;padding:64px 24px;position:relative;}
+  .panel-inner{max-width:560px;text-align:left;}
+  .panel .kicker{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;color:var(--green);letter-spacing:1px;margin-bottom:14px;display:block;}
+  .panel h3{font-weight:900;font-size:clamp(30px,7vw,52px);line-height:1.03;letter-spacing:-1.8px;margin-bottom:16px;}
+  .panel p{font-size:clamp(15px,3.4vw,17.5px);font-weight:500;line-height:1.7;color:var(--text-2);}
+  .panel p b{color:var(--text);}
+  .panel p .g{color:var(--green);font-weight:700;}
+  .panel .stat-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px;}
+  .stat{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px 16px;min-width:120px;}
+  .stat .k{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-3);}
+  .stat .v{font-weight:900;font-size:20px;letter-spacing:-.5px;margin-top:2px;}
+  .stat .v.g{color:var(--green);}
+  .panel-art{position:absolute;right:-4%;bottom:-6%;width:min(46vw,420px);opacity:.16;pointer-events:none;filter:blur(0.5px);}
+  .panel-art.mid{opacity:.9;position:static;width:min(58vw,300px);filter:drop-shadow(0 0 42px rgba(0,200,5,.25));margin:0 auto 20px;display:block;}
+  .panel.center{text-align:center;}
+  .panel.center .panel-inner{text-align:center;}
+  .hprogress{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5;}
+  .hdot{width:8px;height:8px;border-radius:50%;background:var(--line);transition:background .2s;}
+  .hdot.on{background:var(--green);}
+  .swipe-hint{position:absolute;top:22px;left:50%;transform:translateX(-50%);font-family:'Space Mono',monospace;
+    font-size:11px;color:var(--text-3);letter-spacing:1px;z-index:5;white-space:nowrap;}
+
+  /* steps + CTA */
   .steps{display:grid;gap:14px;margin-top:30px;grid-template-columns:1fr;counter-reset:step;}
   @media(min-width:820px){.steps{grid-template-columns:repeat(3,1fr);}}
-  .step{position:relative;background:var(--surface-2);border:1px solid var(--line);border-radius:18px;padding:22px;}
+  .step{position:relative;background:var(--surface-2);border:1px solid var(--line);border-radius:18px;padding:22px;
+    opacity:0;transform:translateY(50px);will-change:transform,opacity;}
   .step::before{counter-increment:step;content:counter(step);display:inline-grid;place-items:center;width:30px;height:30px;
     font-weight:900;font-size:14px;background:var(--green);color:#000;border-radius:50%;margin-bottom:12px;}
   .step h3{font-weight:700;color:var(--text);font-size:16px;margin:0 0 6px;letter-spacing:-.3px;}
@@ -137,8 +162,8 @@
   .step code{font-family:'Space Mono',monospace;font-size:12px;background:#000;color:var(--green);padding:4px 8px;
     border:1px solid var(--line);border-radius:8px;display:inline-block;margin-top:8px;word-break:break-all;}
 
-  .grab{margin-top:16px;text-align:center;background:linear-gradient(180deg,var(--green-tint),transparent 80%),var(--surface-2);
-    border:1px solid var(--green);border-radius:24px;padding:44px 24px;}
+  .grab{margin-top:56px;text-align:center;background:linear-gradient(180deg,var(--green-tint),transparent 80%),var(--surface-2);
+    border:1px solid var(--green);border-radius:24px;padding:48px 24px;opacity:0;transform:translateY(50px);will-change:transform,opacity;}
   .grab h2{font-weight:900;font-size:clamp(26px,5.6vw,42px);line-height:1.06;letter-spacing:-1px;}
   .grab p{font-weight:500;font-size:16px;color:var(--text-2);margin:12px auto 24px;max-width:460px;}
 
@@ -154,23 +179,29 @@
     z-index:80;transition:transform .25s,opacity .25s;pointer-events:none;}
   .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
   :focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:8px;}
-  @media(prefers-reduced-motion:reduce){.marquee-track{animation:none;}html{scroll-behavior:auto;}}
+  @media(prefers-reduced-motion:reduce){
+    .marquee-track{animation:none;}
+    .card,.step,.grab{opacity:1 !important;transform:none !important;}
+  }
 </style>
 </head>
 <body>
 
+<div id="progress"></div>
+
 <nav class="nav">
   <a href="#top" class="brand">$<b>POUCH</b></a>
-  <button class="nav-ca" id="navCa" title="Copy contract address"><span>CA:</span><span id="navCaVal">paste after launch</span></button>
+  <button class="nav-ca" id="navCa" title="Copy contract address"><span>CA:</span><span id="navCaVal"></span></button>
   <a class="nav-cta" href="https://fun.noxa.fi/rh/token/0x6a62d8753c6637f45064c12dda746d053fe1a370" target="_blank" rel="noopener">Buy</a>
 </nav>
 
 <header class="hero" id="top">
+  <div class="hero-glow"></div>
   <div class="wrap">
-    <div class="asset-head">
+    <div class="asset-head" id="assetHead">
       <span class="asset-name">Pouch · POUCH</span>
       <span class="asset-price" id="fakePrice">$0.004663</span>
-      <span class="asset-change"><span class="arrow">▲</span><span id="fakePct">+46.63%</span>&nbsp;<span style="color:var(--text-3);font-weight:500">today</span></span>
+      <span class="asset-change"><span>▲</span><span id="fakePct">+46.63%</span>&nbsp;<span style="color:var(--text-3);font-weight:500">today</span></span>
       <span class="badge-chain"><span class="dot"></span> Robinhood Chain · ID 4663</span>
     </div>
 
@@ -186,18 +217,18 @@
       <span class="num"><span id="lootN">0</span> <img class="ccoin" src="assets/coin.png" alt="" draggable="false"></span>
     </div>
 
-    <h1 class="title"><span class="dollar">$</span>POUCH</h1>
+    <h1 class="title" id="bigTitle"><span class="ch dollar">$</span><span class="ch">P</span><span class="ch">O</span><span class="ch">U</span><span class="ch">C</span><span class="ch">H</span></h1>
     <p class="subtitle">secure the bag.</p>
     <p class="pitch">Robin Hood carried one thing everywhere: the pouch he used to <b>rob the rich and fill the pockets of the poor</b>. Robinhood built a chain to tokenize the rich man's stocks. The pouch came along for the ride — <span class="g">and it doesn't run dry.</span></p>
 
     <div class="cta-row">
       <a class="btn btn-buy" href="https://fun.noxa.fi/rh/token/0x6a62d8753c6637f45064c12dda746d053fe1a370" target="_blank" rel="noopener">Buy $POUCH on NOXA</a>
-      <a class="btn btn-chart" href="https://dexscreener.com/robinhood/0x59de8346b3bcc0e9e7a2356f242229c95bf1958f" target="_blank" rel="noopener" id="chartBtn">View chart</a>
+      <a class="btn btn-chart" href="https://dexscreener.com/robinhood/0x59de8346b3bcc0e9e7a2356f242229c95bf1958f" target="_blank" rel="noopener">View chart</a>
     </div>
 
     <div class="ca-chip" id="caChip" title="Copy contract address">
       <span class="lab">CONTRACT</span>
-      <span class="val" id="caVal">paste your $POUCH address here after launch</span>
+      <span class="val" id="caVal"></span>
       <span class="cpy">Copy</span>
     </div>
   </div>
@@ -210,40 +241,88 @@
   </div>
 </div>
 
-<section class="block">
-  <div class="wrap">
-    <span class="eyebrow">THE LORE</span>
-    <h2 class="h2">One pouch. Rob the rich.<br>Fill the trenches.</h2>
-    <p class="lore-p">The whole legend runs on a coin pouch — the bag the outlaw used to move loot from the people who hoarded it to the people who needed it. Robinhood took the name. <b>We took the pouch.</b></p>
-    <p class="lore-p">This chain was built to put the rich man's stocks onchain. Fine. The pouch just quietly stationed itself by the vault, and every green candle is another handful moved from <b>their</b> ledger to <span class="g">ours</span>.</p>
-    <p class="lore-p">No mascot with a backstory. No cast of characters. Just the bag. <b>You either secure it or you don't.</b></p>
-  </div>
-</section>
-
-<section class="block alt">
+<!-- ===== SCROLL-TRIGGERED CARDS ===== -->
+<section class="block" id="rules">
   <div class="wrap">
     <span class="eyebrow">POUCH RULES</span>
     <h2 class="h2">Why the pouch stays full</h2>
-    <div class="cards three">
+    <p class="sub-line">Three properties, set at deploy, that nobody — not even us — can flip off.</p>
+    <div class="cards" id="cardRow">
       <div class="card"><div class="ic">🔒</div><h3>Sewn shut</h3><p>Launched as single-sided Uniswap V3 liquidity on NOXA, with the LP locked forever. Nobody's cutting this pouch open and walking off with it.</p><span class="tag">LP LOCKED</span></div>
       <div class="card"><div class="ic">🪙</div><h3>No coins skimmed</h3><p>0% tax, no blacklist, no pause. Every coin that goes in the pouch stays in the pouch. No toll on the loot.</p><span class="tag">0% TAX</span></div>
-      <div class="card"><div class="ic">⚡</div><h3>Full from block one</h3><p>Tradeable on a real DEX the second it deploys — no waiting to graduate. The pouch is heavy immediately.</p><span class="tag">INSTANT V3</span></div>
+      <div class="card"><div class="ic">⚡</div><h3>Full from block one</h3><p>Tradeable on a real DEX the second it deployed — no waiting to graduate. The pouch is heavy immediately.</p><span class="tag">INSTANT V3</span></div>
     </div>
   </div>
 </section>
 
+<!-- ===== HORIZONTAL SCROLL STORY ===== -->
+<section class="hwrap" id="hstory">
+  <span class="swipe-hint">SCROLL — THE STORY MOVES SIDEWAYS</span>
+  <div class="htrack" id="htrack">
+    <div class="panel center">
+      <div class="panel-inner">
+        <img class="panel-art mid" src="assets/pouch.png" alt="">
+        <span class="kicker">01 / THE POUCH</span>
+        <h3>One bag carried<br>the whole legend.</h3>
+        <p>Robin Hood robbed the rich and moved the loot in a <b>green drawstring pouch</b> — from the people who hoarded it to the people who needed it. No mascot. No backstory. <span class="g">Just the bag.</span></p>
+      </div>
+    </div>
+    <div class="panel">
+      <img class="panel-art" src="assets/coin.png" alt="">
+      <div class="panel-inner">
+        <span class="kicker">02 / THE TOKEN</span>
+        <h3>$POUCH is the bag,<br>onchain.</h3>
+        <p>A memecoin with nothing to hide: <b>LP locked forever</b>, <b>0% tax</b>, no pause switch, no blacklist, live on a real Uniswap V3 pool from block one. What you see is exactly what you hold.</p>
+        <div class="stat-row">
+          <div class="stat"><div class="k">TAX</div><div class="v g">0.00%</div></div>
+          <div class="stat"><div class="k">LP</div><div class="v g">LOCKED</div></div>
+          <div class="stat"><div class="k">POOL</div><div class="v">UNI V3</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <img class="panel-art" src="assets/pouch.png" alt="">
+      <div class="panel-inner">
+        <span class="kicker">03 / THE CHAIN</span>
+        <h3>Why Robinhood Chain?</h3>
+        <p>Because it's <b>Robin Hood's name on the door.</b> A permissionless Ethereum L2 (Arbitrum Orbit) built to tokenize the rich man's stocks — the one place the outlaw's pouch belongs. ETH gas, real DEXs, and retail already at the table.</p>
+        <div class="stat-row">
+          <div class="stat"><div class="k">CHAIN ID</div><div class="v">4663</div></div>
+          <div class="stat"><div class="k">GAS</div><div class="v">ETH</div></div>
+          <div class="stat"><div class="k">STACK</div><div class="v">ORBIT L2</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel center">
+      <div class="panel-inner">
+        <span class="kicker">04 / THE MOVE</span>
+        <h3>Secure the bag.</h3>
+        <p>The vault's right there. The pouch is open.<br><span class="g">You know what to do.</span></p>
+        <div class="cta-row" style="margin-top:26px;justify-content:center;">
+          <a class="btn btn-buy" href="https://fun.noxa.fi/rh/token/0x6a62d8753c6637f45064c12dda746d053fe1a370" target="_blank" rel="noopener">Buy $POUCH</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hprogress" id="hdots">
+    <span class="hdot on"></span><span class="hdot"></span><span class="hdot"></span><span class="hdot"></span>
+  </div>
+</section>
+
+<!-- steps -->
 <section class="block">
   <div class="wrap">
     <span class="eyebrow">GET THE BAG</span>
     <h2 class="h2">Fill your pouch</h2>
-    <div class="steps">
+    <div class="steps" id="stepRow">
       <div class="step"><h3>Set the chain</h3><p>Add Robinhood Chain to MetaMask / OKX / Rabby. Gas is ETH.</p><code>Chain ID 4663</code><code>rpc.mainnet.chain.robinhood.com</code></div>
       <div class="step"><h3>Bridge in</h3><p>Move ETH across with a fast bridge like Relay or Across. Two minutes.</p><code>Relay · Across · Arbitrum Portal</code></div>
       <div class="step"><h3>Secure it</h3><p>Open the $POUCH page on NOXA and load the bag.</p><code>fun.noxa.fi/rh</code></div>
     </div>
-    <div class="grab">
-      <h2>Secure the bag.</h2>
-      <p>The vault's right there. The pouch is open. You know what to do.</p>
+
+    <div class="grab" id="grabCta">
+      <h2>The pouch never runs dry.</h2>
+      <p>LP locked. 0% tax. Just the bag — and it's already onchain.</p>
       <a class="btn btn-buy" href="https://fun.noxa.fi/rh/token/0x6a62d8753c6637f45064c12dda746d053fe1a370" target="_blank" rel="noopener">Buy $POUCH on NOXA</a>
     </div>
   </div>
@@ -253,7 +332,8 @@
   <div class="wrap">
     <div class="foot-brand">$<b>POUCH</b></div>
     <div class="foot-links">
-      <a href="https://fun.noxa.fi/rh/token/0x6a62d8753c6637f45064c12dda746d053fe1a370" target="_blank" rel="noopener">NOXA Launchpad</a>
+      <a href="https://fun.noxa.fi/rh/token/0x6a62d8753c6637f45064c12dda746d053fe1a370" target="_blank" rel="noopener">NOXA</a>
+      <a href="https://dexscreener.com/robinhood/0x59de8346b3bcc0e9e7a2356f242229c95bf1958f" target="_blank" rel="noopener">Chart</a>
       <a href="https://www.x.com/RobinsPouch" target="_blank" rel="noopener">X / Twitter</a>
       <a href="#" target="_blank" rel="noopener">Telegram</a>
       <a href="https://robinhoodchain.blockscout.com" target="_blank" rel="noopener">Explorer</a>
@@ -264,57 +344,29 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
-  const CA = "0x6a62d8753c6637f45064c12dda746d053fe1a370"; // ← paste your $POUCH contract address here after you launch
-  function shorten(a){return a?a.slice(0,6)+"…"+a.slice(-4):"";}
-  if(CA){document.getElementById('caVal').textContent=CA;document.getElementById('navCaVal').textContent=shorten(CA);}
+  /* ---------- basics ---------- */
+  const CA = "0x6a62d8753c6637f45064c12dda746d053fe1a370";
+  const shorten = a => a ? a.slice(0,6)+"…"+a.slice(-4) : "";
+  document.getElementById('caVal').textContent = CA;
+  document.getElementById('navCaVal').textContent = shorten(CA);
 
   const toast=document.getElementById('toast');let tT;
   function say(m){toast.textContent=m;toast.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>toast.classList.remove('show'),1700);}
+  function copyCA(){navigator.clipboard.writeText(CA).then(()=>say("contract copied ✓"));}
+  document.getElementById('caChip').addEventListener('click',copyCA);
+  document.getElementById('navCa').addEventListener('click',copyCA);
 
-  /* tappable pouch: squish + artwork-coin burst + loot counter */
+  /* ---------- tappable pouch ---------- */
   const stage=document.getElementById('stage');
   const pouchBtn=document.getElementById('pouchBtn');
   const lootN=document.getElementById('lootN');
-  const COIN_SRC=document.querySelector('.ccoin').src;
+  const COIN_SRC="assets/coin.png";
   let loot=0;
   const milestones={10:"10 coins — the pouch approves",25:"25 — the sheriff has noticed",50:"50 — trench provisioner",100:"100 — certified bag securer",250:"250 — the pouch never runs dry",500:"500 — go outside (after one more)"};
 
-  function burst(){
-    const n=3+Math.floor(Math.random()*3);
-    for(let i=0;i<n;i++){
-      const c=document.createElement('img');
-      c.className='fcoin';c.src=COIN_SRC;c.alt='';c.draggable=false;
-      stage.appendChild(c);
-      const ang=(-90+(Math.random()*120-60))*Math.PI/180;
-      const v=140+Math.random()*140;
-      const vx=Math.cos(ang)*v, vy=Math.sin(ang)*v;
-      const rot=(Math.random()*720-360);
-      const t0=performance.now(), dur=650+Math.random()*250, g=620;
-      function step(t){
-        const p=(t-t0)/1000;
-        if(p*1000>dur){c.remove();return;}
-        const x=vx*p, y=vy*p+0.5*g*p*p;
-        c.style.transform=`translate(${x}px,${y}px) rotate(${rot*p}deg)`;
-        c.style.opacity=String(1-(p*1000/dur)*0.9);
-        requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-    }
-  }
-  function tapPouch(){
-    loot++;lootN.textContent=loot;
-    pouchBtn.classList.remove('squish');void pouchBtn.offsetWidth;pouchBtn.classList.add('squish');
-    setTimeout(()=>pouchBtn.classList.remove('squish'),110);
-    burst();
-    if(navigator.vibrate)navigator.vibrate(8);
-    if(milestones[loot])say(milestones[loot]);
-    tickPrice();
-  }
-  pouchBtn.addEventListener('pointerdown',tapPouch);
-  pouchBtn.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tapPouch();}});
-
-  /* playful fake price that ticks up as you tap */
   const priceEl=document.getElementById('fakePrice'), pctEl=document.getElementById('fakePct');
   let price=0.004663, pct=46.63;
   function tickPrice(){
@@ -324,11 +376,97 @@
     pctEl.textContent="+"+pct.toFixed(2)+"%";
   }
 
-  function copyCA(){if(!CA){say("paste your CA into index.html once you launch");return;}
-    navigator.clipboard.writeText(CA).then(()=>{const el=document.querySelector('#caChip .cpy');const o=el.textContent;el.textContent="Copied ✓";setTimeout(()=>el.textContent=o,1200);});}
-  document.getElementById('caChip').addEventListener('click',copyCA);
-  document.getElementById('navCa').addEventListener('click',copyCA);
-  
+  function burst(){
+    const n=3+Math.floor(Math.random()*3);
+    for(let i=0;i<n;i++){
+      const c=document.createElement('img');
+      c.className='fcoin';c.src=COIN_SRC;c.alt='';c.draggable=false;
+      stage.appendChild(c);
+      const ang=(-90+(Math.random()*120-60))*Math.PI/180;
+      const v=140+Math.random()*140;
+      gsap.fromTo(c,{x:0,y:0,rotation:0,opacity:1},
+        {x:Math.cos(ang)*v*0.9, y:Math.sin(ang)*v*0.9+180, rotation:gsap.utils.random(-360,360),
+         opacity:0, duration:gsap.utils.random(0.65,0.95), ease:"power1.in", onComplete:()=>c.remove()});
+    }
+  }
+  function tapPouch(){
+    loot++;lootN.textContent=loot;
+    gsap.fromTo(pouchBtn,{scaleX:1.06,scaleY:0.9,y:6},{scaleX:1,scaleY:1,y:0,duration:.45,ease:"elastic.out(1,0.4)"});
+    burst();
+    if(navigator.vibrate)navigator.vibrate(8);
+    if(milestones[loot])say(milestones[loot]);
+    tickPrice();
+  }
+  pouchBtn.addEventListener('pointerdown',tapPouch);
+  pouchBtn.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tapPouch();}});
+
+  /* ---------- GSAP scroll animations ---------- */
+  gsap.registerPlugin(ScrollTrigger);
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if(!reduceMotion){
+    /* scroll progress bar */
+    gsap.to('#progress',{scaleX:1,ease:'none',
+      scrollTrigger:{trigger:document.body,start:'top top',end:'bottom bottom',scrub:0.3}});
+
+    /* hero entrance */
+    gsap.from('#assetHead',{y:-24,opacity:0,duration:.7,ease:'power2.out'});
+    gsap.from('#pouchBtn',{scale:0.6,opacity:0,duration:.9,delay:.15,ease:'elastic.out(1,0.5)'});
+    gsap.from('#bigTitle .ch',{y:60,opacity:0,duration:.6,delay:.35,stagger:.06,ease:'back.out(1.7)'});
+    gsap.from('.pitch, .hero .cta-row, .ca-chip, .lootbar, .tapHint',{y:24,opacity:0,duration:.6,delay:.6,stagger:.08,ease:'power2.out'});
+
+    /* pouch idle float */
+    gsap.to('#pouchBtn',{y:-10,duration:2.2,yoyo:true,repeat:-1,ease:'sine.inOut',delay:1.4});
+
+    /* ===== three cards animate in sequentially from the bottom ===== */
+    gsap.to('#cardRow .card',{
+      y:0,opacity:1,duration:.75,stagger:.22,ease:'power3.out',
+      scrollTrigger:{trigger:'#cardRow',start:'top 82%',toggleActions:'play none none reverse'}
+    });
+
+    /* steps + final CTA reveal */
+    gsap.to('#stepRow .step',{
+      y:0,opacity:1,duration:.6,stagger:.18,ease:'power3.out',
+      scrollTrigger:{trigger:'#stepRow',start:'top 85%',toggleActions:'play none none reverse'}
+    });
+    gsap.to('#grabCta',{
+      y:0,opacity:1,duration:.7,ease:'power3.out',
+      scrollTrigger:{trigger:'#grabCta',start:'top 88%',toggleActions:'play none none reverse'}
+    });
+
+    /* ===== pinned horizontal scroll story ===== */
+    const track=document.getElementById('htrack');
+    const panels=gsap.utils.toArray('.panel');
+    const dots=gsap.utils.toArray('#hdots .hdot');
+    const hTween = gsap.to(track,{
+      x:()=>-(track.scrollWidth - window.innerWidth),
+      ease:'none',
+      scrollTrigger:{
+        trigger:'#hstory',
+        start:'top top',
+        end:()=>'+='+(track.scrollWidth - window.innerWidth),
+        pin:true,
+        scrub:0.6,
+        anticipatePin:1,
+        invalidateOnRefresh:true,
+        snap:{snapTo:1/(panels.length-1),duration:{min:0.15,max:0.4},ease:'power1.inOut'},
+        onUpdate:self=>{
+          const idx=Math.round(self.progress*(panels.length-1));
+          dots.forEach((d,i)=>d.classList.toggle('on',i===idx));
+        }
+      }
+    });
+
+    /* per-panel content drift-in while scrubbing */
+    panels.forEach(p=>{
+      const inner=p.querySelector('.panel-inner');
+      gsap.from(inner,{y:40,opacity:0,duration:.5,ease:'power2.out',
+        scrollTrigger:{trigger:p,containerAnimation:hTween,start:'left 70%',toggleActions:'play none none reverse'}});
+    });
+  }else{
+    /* reduced motion: everything visible, no pinning */
+    document.querySelectorAll('.card,.step,.grab').forEach(el=>{el.style.opacity=1;el.style.transform='none';});
+  }
 </script>
 </body>
 </html>
