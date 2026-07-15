@@ -69,19 +69,17 @@
   .dot{width:8px;height:8px;border-radius:50%;background:var(--green);}
 
   .pouch-stage{position:relative;margin:22px auto 4px;width:min(300px,66vw);}
-  #pouchBtn{display:block;width:100%;background:none;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent;will-change:transform;}
+  #pouchBtn{display:block;width:100%;will-change:transform;}
   #pouchBtn img{width:100%;height:auto;display:block;filter:drop-shadow(0 0 42px rgba(0,200,5,.22));pointer-events:none;}
-  #pouchBtn:focus-visible{outline:2px solid var(--green);outline-offset:10px;border-radius:24px;}
-  .tapHint{font-family:'Space Mono',monospace;font-size:12px;color:var(--text-3);margin-top:12px;}
-  .tapHint b{color:var(--green);}
-  .fcoin{position:absolute;top:26%;left:50%;width:38px;height:38px;margin-left:-19px;
-    pointer-events:none;z-index:5;will-change:transform,opacity;}
-
-  .lootbar{max-width:360px;margin:18px auto 0;background:var(--surface);border:1px solid var(--line);border-radius:16px;
-    padding:14px 18px;display:flex;align-items:center;justify-content:space-between;}
-  .lootbar .lab{font-size:12px;color:var(--text-2);text-align:left;line-height:1.35;}
-  .lootbar .num{font-weight:900;font-size:28px;color:var(--text);line-height:1;display:flex;align-items:center;gap:8px;letter-spacing:-.5px;}
-  .ccoin{width:28px;height:28px;object-fit:contain;}
+  .asset-change .arw{display:inline-block;transform:translateY(-1px);}
+  .asset-change.neg{color:#FF5000;}
+  .stats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:22px auto 0;max-width:520px;}
+  .stat-card{flex:1;min-width:120px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;text-align:center;}
+  .stat-card .k{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-3);letter-spacing:.3px;}
+  .stat-card .v{font-weight:900;font-size:19px;letter-spacing:-.5px;margin-top:4px;}
+  .live-note{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-family:'Space Mono',monospace;font-size:11px;color:var(--text-3);}
+  .live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 1.8s infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,200,5,.45);}70%{box-shadow:0 0 0 8px rgba(0,200,5,0);}100%{box-shadow:0 0 0 0 rgba(0,200,5,0);}}
 
   .title{font-weight:900;font-size:clamp(56px,15vw,120px);line-height:.95;letter-spacing:-4px;margin-top:22px;display:inline-block;}
   .title .ch{display:inline-block;will-change:transform,opacity;}
@@ -271,22 +269,23 @@
   <div class="wrap">
     <div class="asset-head" id="assetHead">
       <span class="asset-name">Pouch · POUCH</span>
-      <span class="asset-price" id="fakePrice">$0.004663</span>
-      <span class="asset-change"><span>▲</span><span id="fakePct">+46.63%</span>&nbsp;<span style="color:var(--text-3);font-weight:500">today</span></span>
+      <span class="asset-price" id="fakePrice">—</span>
+      <span class="asset-change" id="assetChange"><span class="arw" id="chgArw">▲</span><span id="fakePct">—</span>&nbsp;<span style="color:var(--text-3);font-weight:500">24h</span></span>
       <span class="badge-chain"><span class="dot"></span> Robinhood Chain · ID 4663</span>
     </div>
 
     <div class="pouch-stage" id="stage">
-      <button id="pouchBtn" aria-label="Tap the pouch to secure loot">
+      <div id="pouchBtn">
         <img src="assets/pouch.png" alt="The $POUCH — a green drawstring money bag overflowing with gold coins" draggable="false">
-      </button>
+      </div>
     </div>
-    <p class="tapHint"><b>TAP THE POUCH</b> — shake some loot out</p>
 
-    <div class="lootbar">
-      <span class="lab">Loot secured<br>this visit</span>
-      <span class="num"><span id="lootN">0</span> <img class="ccoin" src="assets/coin.png" alt="" draggable="false"></span>
+    <div class="stats" id="stats">
+      <div class="stat-card"><div class="k">MARKET CAP</div><div class="v" id="stMcap">—</div></div>
+      <div class="stat-card"><div class="k">LIQUIDITY</div><div class="v" id="stLiq">—</div></div>
+      <div class="stat-card"><div class="k">24H VOLUME</div><div class="v" id="stVol">—</div></div>
     </div>
+    <div class="live-note" id="liveNote"><span class="live-dot"></span> Live from DexScreener</div>
 
     <h1 class="title" id="bigTitle"><span class="ch dollar">$</span><span class="ch">P</span><span class="ch">O</span><span class="ch">U</span><span class="ch">C</span><span class="ch">H</span></h1>
     <p class="subtitle">secure the bag.</p>
@@ -377,46 +376,44 @@
   document.getElementById('navCa').addEventListener('click',copyCA);
   const panelCa=document.getElementById('panelCa'); if(panelCa) panelCa.addEventListener('click',copyCA);
 
-  /* ---------- tappable pouch ---------- */
-  const stage=document.getElementById('stage');
-  const pouchBtn=document.getElementById('pouchBtn');
-  const lootN=document.getElementById('lootN');
-  const COIN_SRC="assets/coin.png";
-  let loot=0;
-  const milestones={10:"10 coins — the pouch approves",25:"25 — the sheriff has noticed",50:"50 — trench provisioner",100:"100 — certified bag securer",250:"250 — the pouch never runs dry",500:"500 — go outside (after one more)"};
-
-  const priceEl=document.getElementById('fakePrice'), pctEl=document.getElementById('fakePct');
-  let price=0.004663, pct=46.63;
-  function tickPrice(){
-    price*=1+(0.002+Math.random()*0.006);
-    pct+=0.05+Math.random()*0.2;
-    priceEl.textContent="$"+price.toFixed(6);
-    pctEl.textContent="+"+pct.toFixed(2)+"%";
+  /* ---------- live price + stats from DexScreener ---------- */
+  const TOKEN="0x7c46E1896Ebcc670A1c4eB29Ee8ddb88D3d5884d";
+  const PAIR="0x59de8346b3bcc0e9e7a2356f242229c95bf1958f".toLowerCase();
+  const $=id=>document.getElementById(id);
+  function fUsd(n){ n=Number(n); if(!isFinite(n)||n<=0) return "—";
+    if(n>=1e9) return "$"+(n/1e9).toFixed(2)+"B";
+    if(n>=1e6) return "$"+(n/1e6).toFixed(2)+"M";
+    if(n>=1e3) return "$"+(n/1e3).toFixed(1)+"K";
+    return "$"+n.toFixed(0); }
+  function fPrice(p){ p=parseFloat(p); if(!isFinite(p)||p<=0) return "—";
+    if(p>=1) return "$"+p.toFixed(4);
+    return "$"+p.toPrecision(4).replace(/(\.\d*?)0+$/,'$1').replace(/\.$/,''); }
+  function paint(p){
+    if(!p){ $('fakePrice').textContent="—"; $('fakePct').textContent="—";
+      $('stMcap').textContent="—"; $('stLiq').textContent="—"; $('stVol').textContent="—";
+      $('liveNote').textContent="waiting for first trades on DexScreener…"; return; }
+    $('fakePrice').textContent=fPrice(p.priceUsd);
+    const c=(p.priceChange && typeof p.priceChange.h24==='number') ? p.priceChange.h24 : null;
+    if(c==null){ $('fakePct').textContent="—"; }
+    else{ const up=c>=0; $('chgArw').textContent=up?"▲":"▼"; $('assetChange').classList.toggle('neg',!up);
+      $('fakePct').textContent=(up?"+":"")+c.toFixed(2)+"%"; }
+    $('stMcap').textContent=fUsd(p.marketCap!=null?p.marketCap:p.fdv);
+    $('stLiq').textContent=fUsd(p.liquidity&&p.liquidity.usd);
+    $('stVol').textContent=fUsd(p.volume&&p.volume.h24);
+    $('liveNote').innerHTML='<span class="live-dot"></span> Live from DexScreener · updates every 30s';
   }
-
-  function burst(){
-    const n=3+Math.floor(Math.random()*3);
-    for(let i=0;i<n;i++){
-      const c=document.createElement('img');
-      c.className='fcoin';c.src=COIN_SRC;c.alt='';c.draggable=false;
-      stage.appendChild(c);
-      const ang=(-90+(Math.random()*120-60))*Math.PI/180;
-      const v=140+Math.random()*140;
-      gsap.fromTo(c,{x:0,y:0,rotation:0,opacity:1},
-        {x:Math.cos(ang)*v*0.9, y:Math.sin(ang)*v*0.9+180, rotation:gsap.utils.random(-360,360),
-         opacity:0, duration:gsap.utils.random(0.65,0.95), ease:"power1.in", onComplete:()=>c.remove()});
-    }
+  async function loadStats(){
+    try{
+      const r=await fetch("https://api.dexscreener.com/latest/dex/tokens/"+TOKEN,{cache:'no-store'});
+      if(!r.ok) throw 0;
+      const d=await r.json();
+      const pairs=(d&&d.pairs)||[];
+      const p=pairs.find(x=>x.pairAddress&&x.pairAddress.toLowerCase()===PAIR)
+            ||pairs.find(x=>x.chainId==='robinhood')||pairs[0]||null;
+      paint(p);
+    }catch(e){ if($('fakePrice').textContent==="—"){ $('liveNote').textContent="couldn't reach DexScreener — retrying…"; } }
   }
-  function tapPouch(){
-    loot++;lootN.textContent=loot;
-    gsap.fromTo(pouchBtn,{scaleX:1.06,scaleY:0.9,y:6},{scaleX:1,scaleY:1,y:0,duration:.45,ease:"elastic.out(1,0.4)"});
-    burst();
-    if(navigator.vibrate)navigator.vibrate(8);
-    if(milestones[loot])say(milestones[loot]);
-    tickPrice();
-  }
-  pouchBtn.addEventListener('pointerdown',tapPouch);
-  pouchBtn.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tapPouch();}});
+  loadStats(); setInterval(loadStats,30000);
 
   /* ---------- GSAP scroll animations ---------- */
   gsap.registerPlugin(ScrollTrigger);
@@ -428,7 +425,7 @@
       scrollTrigger:{trigger:document.body,start:'top top',end:'bottom bottom',scrub:0.3}});
 
     /* hero entrance — plays when the hero scrolls into view, after the story */
-    const heroEls=['#assetHead','#pouchBtn','#bigTitle .ch','.pitch','.hero .cta-row','.ca-chip','.lootbar','.tapHint'];
+    const heroEls=['#assetHead','#pouchBtn','#bigTitle .ch','.pitch','.hero .cta-row','.ca-chip','.stats','.live-note'];
     gsap.set(heroEls,{opacity:0});
     let floatTween;
     function startFloat(){ if(!floatTween) floatTween=gsap.to('#pouchBtn',{y:-10,duration:2.2,yoyo:true,repeat:-1,ease:'sine.inOut'}); }
@@ -436,7 +433,7 @@
     heroTl.fromTo('#assetHead',{y:-24,opacity:0},{y:0,opacity:1,duration:.7,ease:'power2.out'})
           .fromTo('#pouchBtn',{scale:0.6,opacity:0},{scale:1,opacity:1,duration:.9,ease:'elastic.out(1,0.5)'},0.1)
           .fromTo('#bigTitle .ch',{y:60,opacity:0},{y:0,opacity:1,duration:.6,stagger:.06,ease:'back.out(1.7)'},0.25)
-          .fromTo('.pitch, .hero .cta-row, .ca-chip, .lootbar, .tapHint',{y:24,opacity:0},{y:0,opacity:1,duration:.6,stagger:.08,ease:'power2.out'},0.4);
+          .fromTo('.pitch, .hero .cta-row, .ca-chip, .stats, .live-note',{y:24,opacity:0},{y:0,opacity:1,duration:.6,stagger:.08,ease:'power2.out'},0.4);
     ScrollTrigger.create({trigger:'#top',start:'top 78%',once:true,onEnter:()=>heroTl.play()});
 
     /* ===== three cards animate in sequentially from the bottom ===== */
