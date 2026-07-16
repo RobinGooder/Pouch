@@ -185,9 +185,18 @@
     z-index:80;transition:transform .25s,opacity .25s;pointer-events:none;}
   .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
   :focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:8px;}
+  .giveback-card{background:linear-gradient(180deg,var(--green-tint),transparent 85%),var(--surface-2);
+    border:1px solid var(--green);border-radius:24px;padding:40px 28px;opacity:0;transform:translateY(50px);will-change:transform,opacity;}
+  .giveback-card .h2{margin-top:4px;}
+  .giveback-card .sub-line{max-width:660px;}
+  .giveback-card .sub-line b{color:var(--green);}
+  .give-stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px;}
+  .gstat{flex:1;min-width:150px;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:14px 16px;}
+  .gk{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-3);letter-spacing:.3px;}
+  .gv{font-weight:900;font-size:20px;letter-spacing:-.5px;margin-top:4px;color:var(--green);}
   @media(prefers-reduced-motion:reduce){
     .marquee-track{animation:none;}
-    .card,.step,.grab{opacity:1 !important;transform:none !important;}
+    .card,.step,.grab,.giveback-card{opacity:1 !important;transform:none !important;}
   }
 </style>
 </head>
@@ -221,11 +230,11 @@
       <div class="panel-inner">
         <span class="kicker">02 / THE TOKEN</span>
         <h3>$POUCH is the bag,<br>onchain.</h3>
-        <p>A memecoin with nothing to hide: <b>LP locked forever</b>, <b>0% tax</b>, no pause switch, no blacklist. And every creator fee the pouch earns goes straight to <span class="g">buybacks &amp; burns</span> — the supply only gets tighter.</p>
+        <p>A memecoin with nothing to hide: <b>LP locked forever</b>, <b>0% tax</b>, no pause switch, no blacklist. And <b>50% of every creator fee</b> the pouch earns buys back $POUCH for <span class="g">community burn events</span> — the supply only gets tighter.</p>
         <div class="stat-row">
           <div class="stat"><div class="k">TAX</div><div class="v g">0.00%</div></div>
           <div class="stat"><div class="k">LP</div><div class="v g">LOCKED</div></div>
-          <div class="stat"><div class="k">CREATOR FEES</div><div class="v g">BUY &amp; BURN</div></div>
+          <div class="stat"><div class="k">50% FEES</div><div class="v g">BUYBACK &amp; BURN</div></div>
         </div>
         <button class="panel-ca" id="panelCa" type="button" aria-label="Copy $POUCH contract address">
           <span class="k">CA</span>
@@ -321,6 +330,22 @@
       <div class="card"><div class="ic">🔒</div><h3>Sewn shut</h3><p>Launched as single-sided Uniswap V3 liquidity on Coinbarrel, with the LP locked forever. Nobody's cutting this pouch open and walking off with it.</p><span class="tag">LP LOCKED</span></div>
       <div class="card"><div class="ic">🪙</div><h3>No coins skimmed</h3><p>0% tax, no blacklist, no pause. Every coin that goes in the pouch stays in the pouch. No toll on the loot.</p><span class="tag">0% TAX</span></div>
       <div class="card"><div class="ic">⚡</div><h3>Full from block one</h3><p>Tradeable on a real DEX the second it deployed — no waiting to graduate. The pouch is heavy immediately.</p><span class="tag">INSTANT V3</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GIVING BACK / BUYBACK & BURN ===== -->
+<section class="block" id="giveback">
+  <div class="wrap">
+    <div class="giveback-card" id="givebackCard">
+      <span class="eyebrow">GIVING BACK TO THE POOR</span>
+      <h2 class="h2">Half the loot goes<br>back to the trenches.</h2>
+      <p class="sub-line"><b>50% of every creator fee</b> $POUCH earns is used to <b>buy back $POUCH</b> off the open market and <b>burn it</b> at community burn events. The rich man's fees get redistributed to every holder — the float shrinks, and Robin Hood keeps his promise. Rob the rich, feed the poor. 🔥</p>
+      <div class="give-stats">
+        <div class="gstat"><div class="gk">CREATOR FEES → BURN</div><div class="gv">50%</div></div>
+        <div class="gstat"><div class="gk">MECHANISM</div><div class="gv">BUYBACK &amp; BURN</div></div>
+        <div class="gstat"><div class="gk">CADENCE</div><div class="gv">COMMUNITY EVENTS</div></div>
+      </div>
     </div>
   </div>
 </section>
@@ -452,6 +477,11 @@
       scrollTrigger:{trigger:'#grabCta',start:'top 88%',toggleActions:'play none none reverse'}
     });
 
+    gsap.to('#givebackCard',{
+      y:0,opacity:1,duration:.7,ease:'power3.out',
+      scrollTrigger:{trigger:'#givebackCard',start:'top 85%',toggleActions:'play none none reverse'}
+    });
+
     /* ===== pinned horizontal scroll story ===== */
     const track=document.getElementById('htrack');
     const panels=gsap.utils.toArray('.panel');
@@ -487,7 +517,7 @@
     });
   }else{
     /* reduced motion: everything visible, no pinning */
-    document.querySelectorAll('.card,.step,.grab').forEach(el=>{el.style.opacity=1;el.style.transform='none';});
+    document.querySelectorAll('.card,.step,.grab,.giveback-card').forEach(el=>{el.style.opacity=1;el.style.transform='none';});
   }
 </script>
 </body>
